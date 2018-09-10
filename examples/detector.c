@@ -799,6 +799,7 @@ void run_detector(int argc, char **argv)
     int cam_index = find_int_arg(argc, argv, "-c", 0);
     int frame_skip = find_int_arg(argc, argv, "-s", 0);
     int avg = find_int_arg(argc, argv, "-avg", 3);
+    int is_wnd = find_int_arg(argc, argv, "-wnd", 0);
     if(argc < 4){
         fprintf(stderr, "usage: %s %s [train/test/valid] [cfg] [weights (optional)]\n", argv[0], argv[1]);
         return;
@@ -843,6 +844,25 @@ void run_detector(int argc, char **argv)
     else if(0==strcmp(argv[2], "valid")) validate_detector(datacfg, cfg, weights, outfile);
     else if(0==strcmp(argv[2], "valid2")) validate_detector_flip(datacfg, cfg, weights, outfile);
     else if(0==strcmp(argv[2], "recall")) validate_detector_recall(cfg, weights);
+    else if(0==strcmp(argv[2], "video")) {
+        list *options = read_data_cfg(datacfg);
+        int classes = option_find_int(options, "classes", 20);
+        char *name_list = option_find_str(options, "names", "data/names.list");
+        char **names = get_labels(name_list);
+        detection_video video;
+        video.classes = classes;
+        video.goods = calloc(classes,sizeof(detection_good));
+        init_statistics_detections(video.goods, names, classes);
+        video_detector(cfg, weights, thresh, cam_index, filename, names, classes, frame_skip, prefix, avg, hier_thresh, width, height, fps, fullscreen,is_wnd,&video);
+        printf("%s video detector result: video frame count is %d.\n",filename,video.frame_count);
+        for(int i=0;i<classes;i++){
+            printf("===============");
+            printf("%s\n",video.goods[i].name);
+            printf("%d\n",video.goods[i].frame_count);
+            printf("%d\n",video.goods[i].max);
+        }
+        free(video.goods);
+    }
     else if(0==strcmp(argv[2], "demo")) {
         list *options = read_data_cfg(datacfg);
         int classes = option_find_int(options, "classes", 20);

@@ -10,6 +10,15 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image_write.h"
 
+#ifdef OPENCV
+
+#include "opencv/cv.h"
+#include "opencv/cxcore.h"
+#include "opencv/highgui.h"
+#include "opencv2/videoio/videoio_c.h"
+
+#endif
+
 int windows = 0;
 
 float colors[6][3] = { {1,0,1}, {0,0,1},{0,1,1},{0,1,0},{1,1,0},{1,0,0} };
@@ -535,6 +544,7 @@ void rgbgr_image(image im)
 }
 
 #ifdef OPENCV
+
 void show_image_cv(image p, const char *name, IplImage *disp)
 {
     int x,y,k;
@@ -570,6 +580,24 @@ void show_image_cv(image p, const char *name, IplImage *disp)
     }
     cvShowImage(buff, disp);
 }
+
+void show_image_cv2(image p, const char *wndname)
+{
+    IplImage *disp = cvCreateImage(cvSize(p.w, p.h), IPL_DEPTH_8U, p.c);  
+    if(p.c == 3) rgbgr_image(p);
+    int step = disp->widthStep;
+    int x,y,k;
+    for(y = 0; y < p.h; ++y){
+        for(x = 0; x < p.w; ++x){
+            for(k= 0; k < p.c; ++k){
+                disp->imageData[y*step + x*p.c + k] = (unsigned char)(get_pixel(p,x,y,k)*255);
+            }
+        }
+    }
+    cvShowImage(wndname, disp);
+    cvReleaseImage(&disp);
+}
+
 #endif
 
 void show_image(image p, const char *name)

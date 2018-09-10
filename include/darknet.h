@@ -515,6 +515,18 @@ typedef struct{
     float x, y, w, h;
 } box;
 
+typedef struct detection_good{
+    char* name;
+    int frame_count;
+    int max;
+}detection_good;
+
+typedef struct detection_video{
+    detection_good* goods;
+    int classes;
+    int frame_count;
+}detection_video;
+
 typedef struct detection{
     box bbox;
     int classes;
@@ -756,6 +768,10 @@ matrix make_matrix(int rows, int cols);
 #ifndef __cplusplus
 #ifdef OPENCV
 image get_image_from_stream(CvCapture *cap);
+void init_statistics_detections(detection_good* goods, char **names, int classes);
+void add_statistics_detections(detection_good* goods,detection *dets, int num, float thresh, char **names, int classes);
+void video_detector(char *cfgfile, char *weightfile, float thresh, int cam_index, const char *filename, char **names, int classes, int delay, char *prefix, int avg_frames, float hier, int w, int h, int frames, int fullscreen,int isShowWnd, detection_video* video);
+
 #endif
 #endif
 void free_image(image m);
