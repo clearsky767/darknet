@@ -853,7 +853,7 @@ void run_detector(int argc, char **argv)
         video.classes = classes;
         video.goods = calloc(classes,sizeof(detection_good));
         init_statistics_detections(video.goods, names, classes);
-        video_detector(cfg, weights, thresh, cam_index, filename, names, classes, frame_skip, prefix, avg, hier_thresh, width, height, fps, fullscreen,is_wnd,&video);
+        video_detector(cfg, weights, thresh, filename, names, classes,is_wnd,&video);
         printf("%s video detector result: video frame count is %d.\n",filename,video.frame_count);
         for(int i=0;i<classes;i++){
             printf("===============");

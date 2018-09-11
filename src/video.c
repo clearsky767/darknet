@@ -58,7 +58,7 @@ void add_statistics_detections(detection_good* goods,detection *dets, int num, f
     return;
 }
 
-void video_detector(char *cfgfile, char *weightfile, float thresh, int cam_index, const char *filename, char **names, int classes, int delay, char *prefix, int avg_frames, float hier, int w, int h, int frames, int fullscreen,int isShowWnd, detection_video* video)
+void video_detector(char *cfgfile, char *weightfile, float thresh, const char *filename, char **names, int classes,int isShowWnd, detection_video* video)
 {
     printf("in video_detector func!\n");
     image **alphabet = load_alphabet();
