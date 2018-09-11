@@ -26,11 +26,13 @@ void init_statistics_detections(detection_good* goods, char **names, int classes
 void add_statistics_detections(detection_good* goods,detection *dets, int num, float thresh, char **names, int classes)
 {
     int i,j;
+    int *max = calloc(classes,sizeof(int));
+    memset(max, 0, classes*sizeof(int));
     
     for(i = 0; i < num; ++i){
         float prob = 0;
         int class = -1;
-        int max = 1;
+       
         for(j = 0; j < classes; ++j){
             if (dets[i].prob[j] > thresh){
                 float tempprob = dets[i].prob[j]*100;
@@ -39,19 +41,20 @@ void add_statistics_detections(detection_good* goods,detection *dets, int num, f
                 {
                     prob = tempprob;
                     class = j;
-                    if(i+1 > max)
-                    {
-                        max = i+1;
-                    }
                 }
             }
         }
         if(prob > 0)
         {
+            max[class]++;
             goods[class].frame_count++;
-            goods[class].max = max;
+            if(max[class]>goods[class].max)
+            {
+                goods[class].max = max[class];
+            }
         }
     }
+    free(max);
     return;
 }
 
