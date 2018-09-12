@@ -122,6 +122,8 @@ void video_detector(char *cfgfile, char *weightfile, float thresh, const char *f
         }
     }
     printf("%s: Predicted video in %f seconds.\n", filename, what_time_is_it_now()-start_time);
+    free_image(img);
+    free_image(resizedimg);
     cvReleaseCapture(&cap);
     if(1 == isShowWnd){
         cvDestroyWindow("Demo");
