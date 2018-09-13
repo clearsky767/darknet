@@ -77,7 +77,7 @@ void video_detector(char *cfgfile, char *weightfile, float thresh, const char *f
 
     //frame detect
     image img = get_image_from_stream(cap);
-    image resizedimg = letterbox_image(img, net->w, net->h);
+    //image resizedimg = letterbox_image(img, net->w, net->h);
 
     layer l = net->layers[net->n-1];
     double start_time = what_time_is_it_now();
@@ -89,7 +89,7 @@ void video_detector(char *cfgfile, char *weightfile, float thresh, const char *f
         int status = fill_image_from_stream(cap, img);
         if(status == 0) break;
         frame_num++;
-        resizedimg = letterbox_image(img, net->w, net->h);
+        image resizedimg = letterbox_image(img, net->w, net->h);
         float *X = resizedimg.data;
         network_predict(net, X);
         int nboxes = 0;
@@ -120,10 +120,11 @@ void video_detector(char *cfgfile, char *weightfile, float thresh, const char *f
                 break;
             }
         }
+        free_image(resizedimg);
     }
     printf("%s: Predicted video in %f seconds.\n", filename, what_time_is_it_now()-start_time);
     free_image(img);
-    free_image(resizedimg);
+    
     cvReleaseCapture(&cap);
     if(1 == isShowWnd){
         cvDestroyWindow("Demo");
