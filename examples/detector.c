@@ -861,22 +861,27 @@ void run_detector(int argc, char **argv)
             printf("%d\n",video.goods[i].frame_count);
             printf("%d\n",video.goods[i].max_num);
             printf("%f\n",video.goods[i].max_prob);
-            float behavior_threshold = 0.2;
+            float behavior_threshold = 0.185;
             //behavior get or put down or other?
+
+	    printf("behavior_threshold is %f ,start y:%f ,end y:%f \n",behavior_threshold,video.goods[i].start_box.y,video.goods[i].end_box.y);
             if((video.goods[i].frame_count < 2) || (video.goods[i].max_num >=2))
             {
+		printf("frame_count <2 or max_num >= 2\n");
                 video.goods[i].behavior = 2;
             }
             else
             {
-                if(video.goods[i].start_box.y < video.goods[i].end_box.y)
+                if(video.goods[i].start_box.y > video.goods[i].end_box.y)
                 {
                     if(video.goods[i].start_box.y-video.goods[i].end_box.y>=behavior_threshold)
                     {
-                        video.goods[i].behavior = 0;
+			printf("======>>111111111111111111111\n");
+                        video.goods[i].behavior = 1;
                     }
                     else
                     {
+			printf("======>>2222222222222222222222\n");
                         video.goods[i].behavior = 2;
                     }
                 }
@@ -884,10 +889,12 @@ void run_detector(int argc, char **argv)
                 {
                     if(video.goods[i].end_box.y-video.goods[i].start_box.y>=behavior_threshold)
                     {
-                        video.goods[i].behavior = 1;
+			printf("======>>333333333333333333333\n");
+                        video.goods[i].behavior = 0;
                     }
                     else
                     {
+			printf("======>>4444444444444444444444\n");
                         video.goods[i].behavior = 2;
                     }
                 }
