@@ -1,6 +1,10 @@
 {
     "files.associations": {
         "array": "c",
-        "string_view": "c"
+        "string_view": "c",
+        "functional": "c",
+        "istream": "c",
+        "tuple": "c",
+        "utility": "c"
     }
 }

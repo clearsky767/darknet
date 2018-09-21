@@ -520,9 +520,9 @@ typedef struct detection_good{
     int frame_count;
     int max_num;
     float max_prob;
-    box down_box;
-    box up_box;
-    box mid_box;
+    box start_box;
+    box end_box;
+    int behavior;//0 get 1 put down 2 other
 }detection_good;
 
 typedef struct detection_video{

@@ -23,6 +23,24 @@ void init_statistics_detections(detection_good* goods, char **names, int classes
     return;
 }
 
+void add_statistics_goodbox(detection_good* goods,int class,box *bbox)
+{
+    if(goods[class].start_box.y <= 0 )
+    {
+        goods[class].start_box.y = bbox->y;
+        goods[class].start_box.x = bbox->x;
+        goods[class].start_box.w = bbox->w;
+        goods[class].start_box.h = bbox->h;
+    }
+    else
+    {
+        goods[class].end_box.y = bbox->y;
+        goods[class].end_box.x = bbox->x;
+        goods[class].end_box.w = bbox->w;
+        goods[class].end_box.h = bbox->h;
+    }
+}
+
 void add_statistics_detections(detection_good* goods,detection *dets, int num, float thresh, char **names, int classes)
 {
     int i,j;
@@ -45,7 +63,9 @@ void add_statistics_detections(detection_good* goods,detection *dets, int num, f
 
                     bbox.x = dets[i].bbox.x;
                     bbox.y = dets[i].bbox.y;
-                    printf("======>>box %s: %.0f%% x:%f y:%f\n", names[j], tempprob,bbox.x,bbox.y);
+                    bbox.w = dets[i].bbox.w;
+                    bbox.h = dets[i].bbox.h;
+                    //printf("======>>box %s: %.0f%% x:%f y:%f\n", names[j], tempprob,bbox.x,bbox.y);
                 }
             }
         }
@@ -61,6 +81,7 @@ void add_statistics_detections(detection_good* goods,detection *dets, int num, f
             {
                 goods[class].max_prob = prob;
             }
+            add_statistics_goodbox(goods,class,&bbox);
         }
     }
     free(max_num);
