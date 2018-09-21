@@ -518,7 +518,11 @@ typedef struct{
 typedef struct detection_good{
     char* name;
     int frame_count;
-    int max;
+    int max_num;
+    float max_prob;
+    box down_box;
+    box up_box;
+    box mid_box;
 }detection_good;
 
 typedef struct detection_video{

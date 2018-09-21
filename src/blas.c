@@ -175,18 +175,21 @@ void pow_cpu(int N, float ALPHA, float *X, int INCX, float *Y, int INCY)
     for(i = 0; i < N; ++i) Y[i*INCY] = pow(X[i*INCX], ALPHA);
 }
 
+// y += a * x
 void axpy_cpu(int N, float ALPHA, float *X, int INCX, float *Y, int INCY)
 {
     int i;
     for(i = 0; i < N; ++i) Y[i*INCY] += ALPHA*X[i*INCX];
 }
 
+// x *= a
 void scal_cpu(int N, float ALPHA, float *X, int INCX)
 {
     int i;
     for(i = 0; i < N; ++i) X[i*INCX] *= ALPHA;
 }
 
+// x = a
 void fill_cpu(int N, float ALPHA, float *X, int INCX)
 {
     int i;
