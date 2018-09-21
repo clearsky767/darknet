@@ -859,7 +859,8 @@ void run_detector(int argc, char **argv)
             printf("===============");
             printf("%s\n",video.goods[i].name);
             printf("%d\n",video.goods[i].frame_count);
-            printf("%d\n",video.goods[i].max);
+            printf("%d\n",video.goods[i].max_num);
+            printf("%f\n",video.goods[i].max_prob);
         }
         free(video.goods);
     }
