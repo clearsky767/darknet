@@ -37,8 +37,8 @@ def cut_images(year, image_id,list_file):
         xmlbox = obj.find('bndbox')
         b = (float(xmlbox.find('xmin').text), float(xmlbox.find('xmax').text), float(xmlbox.find('ymin').text), float(xmlbox.find('ymax').text))
         bb = convert(b)
-        x = bb[0]
-        y = bb[1]
+        x = b[0]
+        y = b[2]
         w = bb[2]
         h = bb[3]
         region = im.crop((x, y, x+w, y+h))
